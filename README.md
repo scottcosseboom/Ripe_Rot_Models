@@ -1,1 +1,0 @@
-# Ripe_Rot_Models
