@@ -1,0 +1,1502 @@
+﻿Formula Depot(
+	Predictor(
+		Table( "Bothexptdata" ),
+		Creator( "Fit Generalized" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "GH1+2_LGRr",
+				"Numeric",
+				Formula(
+					Logist(
+						(-6.80016987295838) + 0.605134317515247 * :Temp
+						+0.29311700587977 * :WD + -0.0226218362815235 * :Temp ^ 2
+						+0.000257183157590454 * :Temp ^ 3 + -0.0231686298775068 *
+						:WD ^ 2 + 0.000486176096455283 * :WD ^ 3
+						+0.00543395875956061 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Fit Generalized" ),
+					Model Name( "Ridge" ), ID( 1787030059 )}
+				)
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						(-6.80016987295838) + 0.605134317515247 * :Temp
+						+0.29311700587977 * :WD + -0.0226218362815235 * :Temp ^ 2
+						+0.000257183157590454 * :Temp ^ 3 + -0.0231686298775068 *
+						:WD ^ 2 + 0.000486176096455283 * :WD ^ 3
+						+0.00543395875956061 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Fit Generalized" ),
+					Model Name( "Ridge" ), ID( 1787030059 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax(
+						Name( "GH1+2_LGRr" ),
+						1,
+						Name( "Probability( Binary3=0 )" ),
+						0,
+						.
+					)
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Bothexptdata" ),
+		Creator( "Fit Generalized" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "GH1+2_LGRl",
+				"Numeric",
+				Formula(
+					Logist(
+						(-4.92667889223267) + 0.265996354203599 * :Temp
+						+0.360788410833105 * :WD + -0.00561639978354349 * :Temp ^ 2
+						 + -0.0294328275809321 * :WD ^ 2 + 0.000637514401109758 *
+						:WD ^ 3 + 0.00516902277522887 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Fit Generalized" ),
+					Model Name( "Lasso" ), ID( 132999762 )}
+				)
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						(-4.92667889223267) + 0.265996354203599 * :Temp
+						+0.360788410833105 * :WD + -0.00561639978354349 * :Temp ^ 2
+						 + -0.0294328275809321 * :WD ^ 2 + 0.000637514401109758 *
+						:WD ^ 3 + 0.00516902277522887 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Fit Generalized" ),
+					Model Name( "Lasso" ), ID( 132999762 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax(
+						Name( "GH1+2_LGRl" ),
+						1,
+						Name( "Probability( Binary3=0 )" ),
+						0,
+						.
+					)
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Bothexptdata" ),
+		Creator( "Neural" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "H1_1",
+				"Numeric",
+				Formula(
+					TanH(
+						(-1.37693037175177) + 0.0744853593371553 * :Temp +
+						-0.149930647194669 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "H1_2",
+				"Numeric",
+				Formula(
+					TanH(
+						4.31818598513262 + -0.213977015369708 * :Temp
+						+0.108120717380737 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "H1_3",
+				"Numeric",
+				Formula(
+					TanH(
+						1.26844778940875 + -0.0739962119598471 * :Temp
+						+0.020159324553956 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					Exp(
+						2.27711417146002 + 3.33249689695159 * H1_1 +
+						-0.0033329071660646 * H1_2 + 1.94566339699747 * H1_3
+					) / (1 + Exp(
+						2.27711417146002 + 3.33249689695159 * H1_1 +
+						-0.0033329071660646 * H1_2 + 1.94566339699747 * H1_3
+					))
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Neural" ), ID( 1643349509 )}
+				)
+			);
+			New Column( "GH1+2_NN",
+				"Numeric",
+				Formula(
+					1 / (1 + Exp(
+						2.27711417146002 + 3.33249689695159 * H1_1 +
+						-0.0033329071660646 * H1_2 + 1.94566339699747 * H1_3
+					))
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Neural" ), ID( 1643349509 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax(
+						Name( "Probability( Binary3=0 )" ),
+						0,
+						Name( "GH1+2_NN" ),
+						1,
+						.
+					)
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Bothexptdata" ),
+		Creator( "Partition" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "Prob(Binary3==0)",
+				"Numeric",
+				Formula(
+					If( !Is Missing( :WD ) & :WD >= 6,
+						If(
+							!Is Missing( :Temp ) & :Temp >= 22,
+								If( !Is Missing( :WD ) & :WD >= 12,
+									If( !Is Missing( :WD ) & :WD >= 24,
+										0.0951575258305221,
+										0.223560448259403
+									),
+									0.470092933895251
+								),
+							!Is Missing( :Temp ) & :Temp >= 17, 0.489755419943379,
+							!Is Missing( :WD ) & :WD >= 18, 0.557989309997961,
+							0.790571679353128
+						),
+						0.907845491137632
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 0, Creator( "Partition" ), ID( 645284090 )}
+				)
+			);
+			New Column( "GH1+2_DT",
+				"Numeric",
+				Formula(
+					If( !Is Missing( :WD ) & :WD >= 6,
+						If(
+							!Is Missing( :Temp ) & :Temp >= 22,
+								If( !Is Missing( :WD ) & :WD >= 12,
+									If( !Is Missing( :WD ) & :WD >= 24,
+										0.904842474169478,
+										0.776439551740597
+									),
+									0.529907066104749
+								),
+							!Is Missing( :Temp ) & :Temp >= 17, 0.510244580056622,
+							!Is Missing( :WD ) & :WD >= 18, 0.44201069000204,
+							0.209428320646872
+						),
+						0.0921545088623685
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 1, Creator( "Partition" ), ID( 645284090 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( Name( "Prob(Binary3==0)" ), 0, Name( "GH1+2_DT" ), 1, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Bothexptdata" ),
+		Creator( "Bootstrap Forest" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "Prob(Binary3==0)",
+				"Numeric",
+				Formula(
+					If(
+						!Is Missing( :WD ) & :WD >= 6,
+							If(
+								!Is Missing( :WD ) & :WD >= 18,
+									If( !Is Missing( :WD ) & :WD >= 24,
+										0.286889834247733,
+										0.346315681393755
+									),
+								!Is Missing( :Temp ) & :Temp >= 17,
+									If(
+										!Is Missing( :Temp ) & :Temp >= 22,
+											0.311827984600545,
+										!Is Missing( :WD ) & :WD >= 12,
+											0.498032767575531,
+										0.640327844025683
+									),
+								Is Missing( :WD ) | :WD < 12, 0.788344358194118,
+								0.835378945262092
+							),
+						!Is Missing( :Temp ) & :Temp >= 27, 0.887200577500115,
+						Is Missing( :Temp ) | :Temp < 17, 0.756791479428885,
+						0.960719526753532
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 0, Creator( "Bootstrap Forest" ), ID( 1184763719 )}
+				)
+			);
+			New Column( "GH1+2_RF",
+				"Numeric",
+				Formula(
+					If(
+						!Is Missing( :WD ) & :WD >= 6,
+							If(
+								!Is Missing( :WD ) & :WD >= 18,
+									If( !Is Missing( :WD ) & :WD >= 24,
+										0.713110165752267,
+										0.653684318606245
+									),
+								!Is Missing( :Temp ) & :Temp >= 17,
+									If(
+										!Is Missing( :Temp ) & :Temp >= 22,
+											0.688172015399455,
+										!Is Missing( :WD ) & :WD >= 12,
+											0.501967232424469,
+										0.359672155974317
+									),
+								Is Missing( :WD ) | :WD < 12, 0.211655641805882,
+								0.164621054737908
+							),
+						!Is Missing( :Temp ) & :Temp >= 27, 0.112799422499885,
+						Is Missing( :Temp ) | :Temp < 17, 0.243208520571115,
+						0.0392804732464684
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 1, Creator( "Bootstrap Forest" ), ID( 1184763719 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( Name( "Prob(Binary3==0)" ), 0, Name( "GH1+2_RF" ), 1, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Bothexptdata" ),
+		Creator( "Support Vector Machines" ),
+		Target( "Binary3" ),
+		Command( "Publish Probability Formula" ),
+		Formula(
+			New Column( "Decision Value",
+				"Numeric",
+				"Continuous",
+				Formula(
+					T#1 = Matrix(
+						{{(:Temp - 20.7672506256704) / 19.2847341897275, (:WD
+						-12.0257418662853) / 25.0154220894071}}
+					);
+					T#2 = [-0.454621284349383 -0.00102903985362715,
+					0.582468457372519 0.238822999362642, -0.195348848918907
+					-0.00102903985362715, -0.454621284349383 0.238822999362642,
+					-0.195348848918907 -0.00102903985362715, -0.454621284349383
+					-0.00102903985362715, -0.195348848918907 -0.240881079069896,
+					0.582468457372519 -0.240881079069896, 0.0639235865115681
+					-0.00102903985362715, -0.195348848918907 0.238822999362642,
+					0.323196021942043 -0.480733118286166, 0.0639235865115681
+					-0.240881079069896, 0.582468457372519 -0.240881079069896,
+					0.323196021942043 -0.480733118286166, -0.454621284349383
+					-0.00102903985362715, 0.0639235865115681 0.478675038578911,
+					-0.195348848918907 -0.00102903985362715, -0.454621284349383
+					0.478675038578911, 0.323196021942043 -0.240881079069896,
+					-0.195348848918907 -0.00102903985362715, 0.323196021942043
+					-0.240881079069896, -0.195348848918907 0.238822999362642,
+					-0.195348848918907 -0.00102903985362715, 0.0639235865115681
+					0.238822999362642, 0.582468457372519 -0.00102903985362715,
+					0.0639235865115681 0.478675038578911, -0.454621284349383
+					0.478675038578911, 0.582468457372519 0.238822999362642,
+					-0.454621284349383 -0.00102903985362715, 0.323196021942043
+					-0.480733118286166, 0.323196021942043 -0.240881079069896,
+					-0.195348848918907 -0.240881079069896, -0.454621284349383
+					0.238822999362642, -0.454621284349383 0.238822999362642,
+					0.582468457372519 -0.00102903985362715, -0.195348848918907
+					0.238822999362642, -0.454621284349383 0.238822999362642,
+					-0.195348848918907 0.478675038578911, -0.454621284349383
+					0.478675038578911, 0.323196021942043 -0.480733118286166,
+					-0.195348848918907 -0.240881079069896, -0.195348848918907
+					-0.240881079069896, 0.323196021942043 -0.480733118286166,
+					0.582468457372519 -0.480733118286166, -0.454621284349383
+					-0.00102903985362715, 0.582468457372519 -0.240881079069896,
+					0.582468457372519 -0.00102903985362715, -0.454621284349383
+					-0.00102903985362715, -0.454621284349383 0.238822999362642,
+					-0.195348848918907 -0.00102903985362715, -0.454621284349383
+					0.238822999362642, -0.195348848918907 0.478675038578911,
+					0.582468457372519 0.478675038578911, -0.454621284349383
+					0.238822999362642, -0.454621284349383 0.478675038578911,
+					0.0639235865115681 -0.00102903985362715, 0.323196021942043
+					-0.00102903985362715, 0.582468457372519 -0.240881079069896,
+					-0.195348848918907 -0.240881079069896, 0.582468457372519
+					-0.480733118286166, -0.195348848918907 -0.00102903985362715,
+					0.0639235865115681 0.238822999362642, 0.323196021942043
+					-0.240881079069896, 0.323196021942043 -0.00102903985362715,
+					-0.195348848918907 0.478675038578911, 0.582468457372519
+					-0.480733118286166, -0.195348848918907 -0.240881079069896,
+					0.0639235865115681 -0.240881079069896, -0.195348848918907
+					0.478675038578911, 0.0639235865115681 0.238822999362642,
+					0.323196021942043 0.238822999362642, 0.323196021942043
+					-0.480733118286166, 0.323196021942043 -0.480733118286166,
+					0.582468457372519 -0.240881079069896, 0.323196021942043
+					-0.240881079069896, -0.454621284349383 0.478675038578911,
+					0.0639235865115681 -0.240881079069896, 0.0639235865115681
+					0.478675038578911, 0.582468457372519 -0.240881079069896,
+					-0.454621284349383 0.478675038578911, -0.195348848918907
+					0.478675038578911, -0.195348848918907 0.478675038578911,
+					-0.195348848918907 0.238822999362642, -0.454621284349383
+					-0.00102903985362715, 0.0639235865115681 -0.00102903985362715,
+					0.582468457372519 -0.480733118286166, -0.454621284349383
+					-0.240881079069896, -0.195348848918907 -0.00102903985362715,
+					-0.195348848918907 -0.00102903985362715, 0.582468457372519
+					-0.00102903985362715, 0.582468457372519 -0.240881079069896,
+					0.0639235865115681 -0.240881079069896, 0.0639235865115681
+					-0.00102903985362715, 0.582468457372519 -0.00102903985362715,
+					0.582468457372519 -0.00102903985362715, -0.454621284349383
+					-0.480733118286166, -0.195348848918907 -0.240881079069896,
+					0.323196021942043 -0.00102903985362715, -0.454621284349383
+					-0.480733118286166, 0.323196021942043 -0.240881079069896,
+					0.0639235865115681 -0.240881079069896, 0.0639235865115681
+					-0.00102903985362715, -0.454621284349383 -0.240881079069896,
+					0.582468457372519 -0.00102903985362715, 0.323196021942043
+					-0.240881079069896, -0.454621284349383 0.238822999362642,
+					0.582468457372519 -0.240881079069896, 0.0639235865115681
+					0.238822999362642, 0.0639235865115681 0.478675038578911,
+					0.323196021942043 -0.240881079069896, -0.454621284349383
+					0.238822999362642, 0.0639235865115681 -0.240881079069896,
+					-0.454621284349383 0.478675038578911, 0.0639235865115681
+					0.238822999362642, -0.195348848918907 -0.00102903985362715,
+					0.323196021942043 -0.00102903985362715, 0.323196021942043
+					-0.480733118286166, -0.454621284349383 0.478675038578911,
+					-0.454621284349383 0.478675038578911, 0.0639235865115681
+					-0.00102903985362715, 0.582468457372519 -0.240881079069896,
+					-0.454621284349383 0.478675038578911, 0.0639235865115681
+					0.478675038578911, 0.0639235865115681 0.238822999362642,
+					0.582468457372519 -0.240881079069896, 0.0639235865115681
+					-0.00102903985362715, 0.323196021942043 -0.00102903985362715,
+					0.582468457372519 -0.00102903985362715, 0.323196021942043
+					-0.00102903985362715, -0.195348848918907 0.478675038578911,
+					0.323196021942043 -0.00102903985362715, -0.195348848918907
+					-0.240881079069896, 0.0639235865115681 -0.00102903985362715,
+					-0.454621284349383 0.478675038578911, -0.454621284349383
+					0.478675038578911, 0.0639235865115681 -0.240881079069896,
+					0.0639235865115681 -0.240881079069896, -0.195348848918907
+					-0.00102903985362715, -0.195348848918907 0.238822999362642,
+					-0.195348848918907 -0.00102903985362715, 0.323196021942043
+					-0.00102903985362715, 0.0639235865115681 -0.00102903985362715,
+					-0.195348848918907 0.238822999362642, 0.0639235865115681
+					-0.240881079069896, -0.195348848918907 0.478675038578911,
+					0.323196021942043 -0.240881079069896, 0.0639235865115681
+					-0.00102903985362715, -0.195348848918907 0.478675038578911,
+					-0.454621284349383 -0.00102903985362715, 0.582468457372519
+					-0.00102903985362715, -0.195348848918907 -0.240881079069896,
+					0.582468457372519 -0.00102903985362715, 0.582468457372519
+					-0.00102903985362715, -0.195348848918907 0.478675038578911,
+					-0.195348848918907 0.238822999362642, -0.454621284349383
+					0.238822999362642];
+					T#3 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 0.218957609180255, 1, 1, 1, 0.635918680021098, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, -0.0325356442577133, -1, -1, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -0.41094025745726,
+					-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -1, -1, -1, -0.159970224220618,
+					-0.469903472960603, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -0.781526690305158, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -1, -1, -1, -1];
+					T#3` * Exp( -1 * Distance( T#2, T#1 ) ) - (-0.950603889262361);
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					Logist(
+						-(0.052235871739997 + -1.31873434511623 * Decision Value)
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Support Vector Machines" ),
+					ID( 210878112 )}
+				)
+			);
+			New Column( "GH1+2_SVM",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						-(0.052235871739997 + -1.31873434511623 * Decision Value)
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Support Vector Machines" ),
+					ID( 210878112 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax(
+						Name( "Probability( Binary3=0 )" ),
+						0,
+						Name( "GH1+2_SVM" ),
+						1,
+						.
+					)
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH1" ),
+		Creator( "Fit Generalized" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "GH1_LGRr",
+				"Numeric",
+				Formula(
+					Logist(
+						(-5.60992648382921) + 0.581977387206294 * :Temp
+						+0.216531475751172 * :WD + -0.0230955756864028 * :Temp ^ 2
+						 + 0.000307097399416077 * :Temp ^ 3 + -0.0139835038148158 *
+						:WD ^ 2 + 0.00032826815763574 * :WD ^ 3
+						+0.00104058977906272 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Fit Generalized" ),
+					Model Name( "Ridge" ), ID( 1780289164 )}
+				)
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						(-5.60992648382921) + 0.581977387206294 * :Temp
+						+0.216531475751172 * :WD + -0.0230955756864028 * :Temp ^ 2
+						 + 0.000307097399416077 * :Temp ^ 3 + -0.0139835038148158 *
+						:WD ^ 2 + 0.00032826815763574 * :WD ^ 3
+						+0.00104058977906272 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Fit Generalized" ),
+					Model Name( "Ridge" ), ID( 1780289164 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( GH1_LGRr, 1, Name( "Probability( Binary3=0 )" ), 0, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH1" ),
+		Creator( "Fit Generalized" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "GH1_LGRl",
+				"Numeric",
+				Formula(
+					Logist(
+						(-19.4021102259758) + 2.24218476319536 * :Temp
+						+0.624709700384285 * :WD + -0.0958230399054965 * :Temp ^ 2
+						 + 0.00132964488639774 * :Temp ^ 3 + -0.0436254934470852 *
+						:WD ^ 2 + 0.00100686319230169 * :WD ^ 3
+						+0.00228345768174079 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Fit Generalized" ),
+					Model Name( "Lasso" ), ID( 1717626290 )}
+				)
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						(-19.4021102259758) + 2.24218476319536 * :Temp
+						+0.624709700384285 * :WD + -0.0958230399054965 * :Temp ^ 2
+						 + 0.00132964488639774 * :Temp ^ 3 + -0.0436254934470852 *
+						:WD ^ 2 + 0.00100686319230169 * :WD ^ 3
+						+0.00228345768174079 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Fit Generalized" ),
+					Model Name( "Lasso" ), ID( 1717626290 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( GH1_LGRl, 1, Name( "Probability( Binary3=0 )" ), 0, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH2" ),
+		Creator( "Fit Generalized" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "GH2_LGRr",
+				"Numeric",
+				Formula(
+					Logist(
+						(-4.44369969097739) + 0.33492441412678 * :Temp
+						+0.124762043966671 * :WD + -0.0112430750023689 * :Temp ^ 2
+						 + 0.000106692821235592 * :Temp ^ 3 + -0.0138102610858889 *
+						:WD ^ 2 + 0.000307340385121959 * :WD ^ 3
+						+0.00548773661948241 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Fit Generalized" ),
+					Model Name( "Ridge" ), ID( 1272073176 )}
+				)
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						(-4.44369969097739) + 0.33492441412678 * :Temp
+						+0.124762043966671 * :WD + -0.0112430750023689 * :Temp ^ 2
+						 + 0.000106692821235592 * :Temp ^ 3 + -0.0138102610858889 *
+						:WD ^ 2 + 0.000307340385121959 * :WD ^ 3
+						+0.00548773661948241 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Fit Generalized" ),
+					Model Name( "Ridge" ), ID( 1272073176 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( GH2_LGRr, 1, Name( "Probability( Binary3=0 )" ), 0, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH2" ),
+		Creator( "Fit Generalized" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "GH2_LGRl",
+				"Numeric",
+				Formula(
+					Logist(
+						(-2.6100230656017) + 0.087740231660619 * :Temp
+						+0.137729659352304 * :WD + -0.00167240604367732 * :Temp ^ 2
+						 + -0.0117509515046714 * :WD ^ 2 + 0.000274079695244533 *
+						:WD ^ 3 + 0.00382579860817334 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Fit Generalized" ),
+					Model Name( "Lasso" ), ID( 1362981363 )}
+				)
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						(-2.6100230656017) + 0.087740231660619 * :Temp
+						+0.137729659352304 * :WD + -0.00167240604367732 * :Temp ^ 2
+						 + -0.0117509515046714 * :WD ^ 2 + 0.000274079695244533 *
+						:WD ^ 3 + 0.00382579860817334 * :Temp * :WD
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Fit Generalized" ),
+					Model Name( "Lasso" ), ID( 1362981363 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( GH2_LGRl, 1, Name( "Probability( Binary3=0 )" ), 0, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH1" ),
+		Creator( "Partition" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "Prob(Binary3==0)",
+				"Numeric",
+				Formula(
+					If( !Is Missing( :WD ) & :WD >= 6,
+						If(
+							!Is Missing( :Temp ) & :Temp >= 17,
+								If(
+									!Is Missing( :WD ) & :WD >= 24,
+										0.0188920801288267,
+									!Is Missing( :WD ) & :WD >= 12,
+										0.188405419992933,
+									0.36739056898622
+								),
+							!Is Missing( :WD ) & :WD >= 18,
+								If( Is Missing( :WD ) | :WD < 24,
+									0.233324075833219,
+									0.566657409166552
+								),
+							0.742852778607089
+						),
+						0.915154264972777
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 0, Creator( "Partition" ), ID( 1447812898 )}
+				)
+			);
+			New Column( "GH1_DT",
+				"Numeric",
+				Formula(
+					If( !Is Missing( :WD ) & :WD >= 6,
+						If(
+							!Is Missing( :Temp ) & :Temp >= 17,
+								If(
+									!Is Missing( :WD ) & :WD >= 24,
+										0.981107919871173,
+									!Is Missing( :WD ) & :WD >= 12,
+										0.811594580007067,
+									0.63260943101378
+								),
+							!Is Missing( :WD ) & :WD >= 18,
+								If( Is Missing( :WD ) | :WD < 24,
+									0.766675924166781,
+									0.433342590833448
+								),
+							0.257147221392911
+						),
+						0.0848457350272232
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 1, Creator( "Partition" ), ID( 1447812898 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula( IfMax( Name( "Prob(Binary3==0)" ), 0, GH1_DT, 1, . ) )
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH2" ),
+		Creator( "Partition" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "Prob(Binary3==0)",
+				"Numeric",
+				Formula(
+					If(
+						!Is Missing( :WD ) & :WD >= 12,
+							If(
+								!Is Missing( :Temp ) & :Temp >= 22,
+									If(
+										Is Missing( :Temp ) | :Temp < 32,
+											If(
+												!Is Missing( :Temp ) & :Temp >= 27,
+													If(
+														!Is Missing( :WD ) & :WD >=
+														24,
+														0.0481083859896017,
+														0.130270497627856
+													),
+												Is Missing( :WD ) | :WD < 18,
+													0.207718300783623,
+												Is Missing( :WD ) | :WD < 24,
+													0.305360881199301,
+												0.407147841599068
+											),
+										!Is Missing( :WD ) & :WD >= 24,
+											0.212732825662107,
+										0.422240752279596
+									),
+								!Is Missing( :WD ) & :WD >= 24,
+									If( Is Missing( :Temp ) | :Temp < 17,
+										0.444789363648999,
+										0.794044987027428
+									),
+								!Is Missing( :Temp ) & :Temp >= 17,
+									If( !Is Missing( :WD ) & :WD >= 18,
+										0.511460893995552,
+										0.797175179709838
+									),
+								Is Missing( :WD ) | :WD < 18, 0.656515839050497,
+								0.942230124764783
+							),
+						!Is Missing( :WD ) & :WD >= 6,
+							If( !Is Missing( :Temp ) & :Temp >= 22,
+								If(
+									Is Missing( :Temp ) | :Temp < 27,
+										0.511876277262751,
+									!Is Missing( :Temp ) & :Temp >= 32,
+										0.51257333279938,
+									0.764668888265943
+								),
+								0.798550158154942
+							),
+						Is Missing( :Temp ) | :Temp < 17, 0.767499304050801,
+						!Is Missing( :Temp ) & :Temp >= 32, 0.772859019105637,
+						0.974082436759559
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 0, Creator( "Partition" ), ID( 505999894 )}
+				)
+			);
+			New Column( "GH2_DT",
+				"Numeric",
+				Formula(
+					If(
+						!Is Missing( :WD ) & :WD >= 12,
+							If(
+								!Is Missing( :Temp ) & :Temp >= 22,
+									If(
+										Is Missing( :Temp ) | :Temp < 32,
+											If(
+												!Is Missing( :Temp ) & :Temp >= 27,
+													If(
+														!Is Missing( :WD ) & :WD >=
+														24,
+														0.951891614010398,
+														0.869729502372144
+													),
+												Is Missing( :WD ) | :WD < 18,
+													0.792281699216377,
+												Is Missing( :WD ) | :WD < 24,
+													0.694639118800699,
+												0.592852158400932
+											),
+										!Is Missing( :WD ) & :WD >= 24,
+											0.787267174337893,
+										0.577759247720404
+									),
+								!Is Missing( :WD ) & :WD >= 24,
+									If( Is Missing( :Temp ) | :Temp < 17,
+										0.555210636351001,
+										0.205955012972572
+									),
+								!Is Missing( :Temp ) & :Temp >= 17,
+									If( !Is Missing( :WD ) & :WD >= 18,
+										0.488539106004448,
+										0.202824820290162
+									),
+								Is Missing( :WD ) | :WD < 18, 0.343484160949503,
+								0.057769875235217
+							),
+						!Is Missing( :WD ) & :WD >= 6,
+							If( !Is Missing( :Temp ) & :Temp >= 22,
+								If(
+									Is Missing( :Temp ) | :Temp < 27,
+										0.488123722737249,
+									!Is Missing( :Temp ) & :Temp >= 32,
+										0.48742666720062,
+									0.235331111734057
+								),
+								0.201449841845058
+							),
+						Is Missing( :Temp ) | :Temp < 17, 0.232500695949199,
+						!Is Missing( :Temp ) & :Temp >= 32, 0.227140980894363,
+						0.0259175632404413
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 1, Creator( "Partition" ), ID( 505999894 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula( IfMax( Name( "Prob(Binary3==0)" ), 0, GH2_DT, 1, . ) )
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH1" ),
+		Creator( "Bootstrap Forest" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "Prob(Binary3==0)",
+				"Numeric",
+				Formula(
+					0.5 * If( !Is Missing( :Temp ) & :Temp >= 17,
+						If( !Is Missing( :WD ) & :WD >= 6,
+							If(
+								!Is Missing( :Temp ) & :Temp >= 32,
+									0.135593098621511,
+								!Is Missing( :WD ) & :WD >= 24, 0.0281203919867178,
+								Is Missing( :Temp ) | :Temp < 22, 0.207914359259753,
+								!Is Missing( :Temp ) & :Temp >= 27,
+									0.188488219509271,
+								0.301765230596809
+							),
+							0.875515613147914
+						),
+						0.769746902654867
+					) + 0.5 * If(
+						!Is Missing( :WD ) & :WD >= 18,
+							If( !Is Missing( :Temp ) & :Temp >= 17,
+								0.0549517517274821,
+								0.421724224148382
+							),
+						!Is Missing( :Temp ) & :Temp >= 17, 0.562029061289187,
+						0.785241741663732
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 0, Creator( "Bootstrap Forest" ), ID( 622898593 )}
+				)
+			);
+			New Column( "GH1_RF",
+				"Numeric",
+				Formula(
+					0.5 * If( !Is Missing( :Temp ) & :Temp >= 17,
+						If( !Is Missing( :WD ) & :WD >= 6,
+							If(
+								!Is Missing( :Temp ) & :Temp >= 32,
+									0.864406901378489,
+								!Is Missing( :WD ) & :WD >= 24, 0.971879608013282,
+								Is Missing( :Temp ) | :Temp < 22, 0.792085640740247,
+								!Is Missing( :Temp ) & :Temp >= 27,
+									0.811511780490729,
+								0.698234769403191
+							),
+							0.124484386852086
+						),
+						0.230253097345133
+					) + 0.5 * If(
+						!Is Missing( :WD ) & :WD >= 18,
+							If( !Is Missing( :Temp ) & :Temp >= 17,
+								0.945048248272518,
+								0.578275775851618
+							),
+						!Is Missing( :Temp ) & :Temp >= 17, 0.437970938710813,
+						0.214758258336268
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 1, Creator( "Bootstrap Forest" ), ID( 622898593 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula( IfMax( Name( "Prob(Binary3==0)" ), 0, GH1_RF, 1, . ) )
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH2" ),
+		Creator( "Bootstrap Forest" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "Prob(Binary3==0)",
+				"Numeric",
+				Formula(
+					0.333333333333333 * If(
+						!Is Missing( :Temp ) & :Temp >= 22,
+							If( !Is Missing( :Temp ) & :Temp >= 27,
+								If(
+									!Is Missing( :Temp ) & :Temp >= 32,
+										0.342903312328275,
+									!Is Missing( :WD ) & :WD >= 12,
+										0.0381709581142066,
+									0.812027806935586
+								),
+								0.502102883726658
+							),
+						!Is Missing( :Temp ) & :Temp >= 17, 0.753441733565941,
+						!Is Missing( :WD ) & :WD >= 24, 0.519607190501535,
+						0.866557552917093
+					) + 0.333333333333333 * If(
+						!Is Missing( :WD ) & :WD >= 6,
+							If(
+								!Is Missing( :WD ) & :WD >= 24, 0.378188016381766,
+								!Is Missing( :WD ) & :WD >= 12,
+									If( Is Missing( :WD ) | :WD < 18,
+										0.617265099232703,
+										0.684273727365676
+									),
+								0.661715733526285
+							),
+						Is Missing( :Temp ) | :Temp < 17, 0.719693583609373,
+						0.973231194536458
+					) + 0.333333333333333 * If(
+						!Is Missing( :WD ) & :WD >= 12,
+							If(
+								!Is Missing( :Temp ) & :Temp >= 22,
+									If(
+										Is Missing( :WD ) | :WD < 18,
+											If( !Is Missing( :Temp ) & :Temp >= 27,
+												0.118635531303553,
+												0.294908425042843
+											),
+										!Is Missing( :WD ) & :WD >= 24,
+											0.206478180930927,
+										0.248409869369366
+									),
+								!Is Missing( :WD ) & :WD >= 18,
+									If( Is Missing( :WD ) | :WD < 24,
+										0.508635691701485,
+										0.695056230238799
+									),
+								!Is Missing( :Temp ) & :Temp >= 17,
+									0.715423017705734,
+								0.796730726932667
+							),
+						!Is Missing( :WD ) & :WD >= 6, 0.698849924389112,
+						Is Missing( :Temp ) | :Temp < 17, 0.721968325153108,
+						!Is Missing( :Temp ) & :Temp >= 32, 0.660170015246902,
+						0.974334290070544
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 0, Creator( "Bootstrap Forest" ), ID( 1073385914 )}
+				)
+			);
+			New Column( "GH2_RF",
+				"Numeric",
+				Formula(
+					0.333333333333333 * If(
+						!Is Missing( :Temp ) & :Temp >= 22,
+							If( !Is Missing( :Temp ) & :Temp >= 27,
+								If(
+									!Is Missing( :Temp ) & :Temp >= 32,
+										0.657096687671725,
+									!Is Missing( :WD ) & :WD >= 12,
+										0.961829041885794,
+									0.187972193064414
+								),
+								0.497897116273342
+							),
+						!Is Missing( :Temp ) & :Temp >= 17, 0.246558266434059,
+						!Is Missing( :WD ) & :WD >= 24, 0.480392809498465,
+						0.133442447082907
+					) + 0.333333333333333 * If(
+						!Is Missing( :WD ) & :WD >= 6,
+							If(
+								!Is Missing( :WD ) & :WD >= 24, 0.621811983618234,
+								!Is Missing( :WD ) & :WD >= 12,
+									If( Is Missing( :WD ) | :WD < 18,
+										0.382734900767297,
+										0.315726272634324
+									),
+								0.338284266473715
+							),
+						Is Missing( :Temp ) | :Temp < 17, 0.280306416390627,
+						0.0267688054635423
+					) + 0.333333333333333 * If(
+						!Is Missing( :WD ) & :WD >= 12,
+							If(
+								!Is Missing( :Temp ) & :Temp >= 22,
+									If(
+										Is Missing( :WD ) | :WD < 18,
+											If( !Is Missing( :Temp ) & :Temp >= 27,
+												0.881364468696447,
+												0.705091574957157
+											),
+										!Is Missing( :WD ) & :WD >= 24,
+											0.793521819069073,
+										0.751590130630634
+									),
+								!Is Missing( :WD ) & :WD >= 18,
+									If( Is Missing( :WD ) | :WD < 24,
+										0.491364308298515,
+										0.304943769761201
+									),
+								!Is Missing( :Temp ) & :Temp >= 17,
+									0.284576982294266,
+								0.203269273067333
+							),
+						!Is Missing( :WD ) & :WD >= 6, 0.301150075610888,
+						Is Missing( :Temp ) | :Temp < 17, 0.278031674846892,
+						!Is Missing( :Temp ) & :Temp >= 32, 0.339829984753099,
+						0.0256657099294567
+					)
+				),
+				Set Property(
+					Response Probability,
+					{:Binary3, 1, Creator( "Bootstrap Forest" ), ID( 1073385914 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula( IfMax( Name( "Prob(Binary3==0)" ), 0, GH2_RF, 1, . ) )
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH1" ),
+		Creator( "Neural" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "H1_1",
+				"Numeric",
+				Formula(
+					TanH(
+						0.0650203210778464 + 0.00751740335695296 * :Temp
+						+0.133823501809757 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "H1_2",
+				"Numeric",
+				Formula(
+					TanH(
+						(-46.5042688710194) + 0.609380169548068 * :Temp
+						+1.49885080979015 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "H1_3",
+				"Numeric",
+				Formula(
+					TanH(
+						26.2900725677815 + -2.2510115964876 * :Temp +
+						-0.00770150456950115 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					Exp(
+						2.17354643239681 + -5.55494555891887 * H1_1 +
+						-7.17663403610792 * H1_2 + 5.35541663323422 * H1_3
+					) / (1 + Exp(
+						2.17354643239681 + -5.55494555891887 * H1_1 +
+						-7.17663403610792 * H1_2 + 5.35541663323422 * H1_3
+					))
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Neural" ), ID( 1525265228 )}
+				)
+			);
+			New Column( "GH1_NN",
+				"Numeric",
+				Formula(
+					1 / (1 + Exp(
+						2.17354643239681 + -5.55494555891887 * H1_1 +
+						-7.17663403610792 * H1_2 + 5.35541663323422 * H1_3
+					))
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Neural" ), ID( 1525265228 )}
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH2" ),
+		Creator( "Neural" ),
+		Target( "Binary3" ),
+		Command( "Publish Prediction Formula" ),
+		Formula(
+			New Column( "H1_1",
+				"Numeric",
+				Formula(
+					TanH(
+						(-6.30603678379774) + 0.283298686324497 * :Temp +
+						-0.0872928903006325 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "H1_2",
+				"Numeric",
+				Formula(
+					TanH(
+						1.17456928775291 + -0.0772777573806592 * :Temp
+						+0.0170672474736195 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "H1_3",
+				"Numeric",
+				Formula(
+					TanH(
+						4.61328952583973 + -0.199294051462163 * :Temp
+						+0.0233380872364677 * :WD
+					)
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					Exp(
+						0.0813725649480255 + 9.17041279542096 * H1_1 +
+						-2.46184941709436 * H1_2 + 11.3095278575953 * H1_3
+					) / (1 + Exp(
+						0.0813725649480255 + 9.17041279542096 * H1_1 +
+						-2.46184941709436 * H1_2 + 11.3095278575953 * H1_3
+					))
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Neural" ), ID( 496351960 )}
+				)
+			);
+			New Column( "GH2_NN",
+				"Numeric",
+				Formula(
+					1 / (1 + Exp(
+						0.0813725649480255 + 9.17041279542096 * H1_1 +
+						-2.46184941709436 * H1_2 + 11.3095278575953 * H1_3
+					))
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Neural" ), ID( 496351960 )}
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH1" ),
+		Creator( "Support Vector Machines" ),
+		Target( "Binary3" ),
+		Command( "Publish Probability Formula" ),
+		Formula(
+			New Column( "Decision Value",
+				"Numeric",
+				"Continuous",
+				Formula(
+					T#4 = Matrix(
+						{{(:Temp - 21.1287878787879) / 6.9758638448684, (:WD
+						-12.1363636363636) / 8.06914084671743}}
+					);
+					T#5 = [-1.30862472115238 -0.0168993996949638, -0.591867612471409
+					 -0.0168993996949638, -1.30862472115238 -0.76047298627337,
+					0.841646604890535 -0.76047298627337, -0.591867612471409
+					-0.76047298627337, -1.30862472115238 -0.0168993996949638,
+					1.55840371357151 -0.76047298627337, -1.30862472115238
+					-0.76047298627337, 1.55840371357151 -1.50404657285178,
+					0.841646604890535 0.726674186883442, 0.124889496209563
+					-1.50404657285178, -0.591867612471409 -0.76047298627337,
+					1.55840371357151 -0.76047298627337, 0.124889496209563
+					-0.76047298627337, -1.30862472115238 1.47024777346185,
+					-1.30862472115238 -0.76047298627337, 0.124889496209563
+					-1.50404657285178, -1.30862472115238 1.47024777346185,
+					-0.591867612471409 -0.0168993996949638, 0.124889496209563
+					-1.50404657285178, -1.30862472115238 -0.0168993996949638,
+					0.124889496209563 -0.0168993996949638, 0.124889496209563
+					0.726674186883442, 0.124889496209563 0.726674186883442,
+					-1.30862472115238 1.47024777346185, 0.841646604890535
+					-1.50404657285178, 0.841646604890535 -0.0168993996949638,
+					-0.591867612471409 -0.76047298627337, -1.30862472115238
+					-0.0168993996949638, 0.124889496209563 -1.50404657285178,
+					-1.30862472115238 -0.0168993996949638, 1.55840371357151
+					-0.76047298627337, 0.841646604890535 1.47024777346185,
+					0.124889496209563 1.47024777346185, -0.591867612471409
+					1.47024777346185, -1.30862472115238 0.726674186883442,
+					0.124889496209563 -0.76047298627337, -1.30862472115238
+					0.726674186883442, -1.30862472115238 -0.0168993996949638,
+					0.124889496209563 -0.76047298627337, -0.591867612471409
+					-0.0168993996949638, -1.30862472115238 1.47024777346185,
+					1.55840371357151 1.47024777346185, -0.591867612471409
+					-0.0168993996949638, -0.591867612471409 -0.76047298627337,
+					0.841646604890535 -1.50404657285178, 0.124889496209563
+					1.47024777346185, 0.124889496209563 -0.76047298627337,
+					-0.591867612471409 -0.0168993996949638, -0.591867612471409
+					-0.76047298627337, -1.30862472115238 -0.76047298627337,
+					0.124889496209563 -0.76047298627337, -1.30862472115238
+					0.726674186883442, 0.841646604890535 -0.76047298627337,
+					-1.30862472115238 0.726674186883442, 0.841646604890535
+					-0.76047298627337, 1.55840371357151 -0.0168993996949638,
+					-0.591867612471409 -0.0168993996949638, -0.591867612471409
+					-0.0168993996949638, -0.591867612471409 -0.76047298627337,
+					-1.30862472115238 -0.76047298627337, 0.841646604890535
+					0.726674186883442, 1.55840371357151 -0.0168993996949638,
+					0.124889496209563 -0.76047298627337];
+					T#6 = [1, 1, 0.999193880375624, 1, 1, 1, 1, 1, 0.978655608776704,
+					1, 1, 1, 1, 1, 1, 0.660641686818639, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					0.733427625446179, 1, 1, 1, 0.790176369570941, 1, -1,
+					-0.549465845025404, -0.933734460161817, -0.69632683325457, -1,
+					-1, -1, -1, -1, -1, -1, -0.362101574703198, -1, -1, -1,
+					-0.0404553486821027, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+					-0.699975744648044, -1, -1, -0.969993075803123,
+					-0.910042288709828, -1];
+					T#6` * Exp( -0.5 * Distance( T#5, T#4 ) ) - (-0.0592351387766376
+					);
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					Logist(
+						-((-0.268221895132278) + -1.73373525660222 * Decision Value)
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Support Vector Machines" ),
+					ID( 831748435 )}
+				)
+			);
+			New Column( "GH1_SVM",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						-((-0.268221895132278) + -1.73373525660222 * Decision Value)
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Support Vector Machines" ),
+					ID( 831748435 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( Name( "Probability( Binary3=0 )" ), 0, GH1_SVM, 1, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	),
+	Predictor(
+		Table( "Trial=GH2" ),
+		Creator( "Support Vector Machines" ),
+		Target( "Binary3" ),
+		Command( "Publish Probability Formula" ),
+		Formula(
+			New Column( "Decision Value",
+				"Numeric",
+				"Continuous",
+				Formula(
+					T#7 = Matrix(
+						{{(:Temp - 21.9044585987261) / 7.23841553661068, (:WD
+						-12.6496815286624) / 8.50103028600456}}
+					);
+					T#8 = [0.703958121152551 -0.782220660901532, -0.677559691609331
+					1.3351697487802, 0.703958121152551 -0.0764238576742875,
+					-1.36831859799027 -0.0764238576742875, 0.0131992147716102
+					-0.782220660901532, 0.0131992147716102 0.629372945552957,
+					1.39471702753349 -1.48801746412878, 1.39471702753349
+					1.3351697487802, -0.677559691609331 -0.782220660901532,
+					-1.36831859799027 -1.48801746412878, -0.677559691609331
+					-0.782220660901532, -0.677559691609331 -0.0764238576742875,
+					0.703958121152551 -0.782220660901532, 0.0131992147716102
+					-0.0764238576742875, 0.703958121152551 -0.782220660901532,
+					0.0131992147716102 1.3351697487802, -0.677559691609331
+					1.3351697487802, -1.36831859799027 -0.0764238576742875,
+					-1.36831859799027 -1.48801746412878, 1.39471702753349
+					-0.782220660901532, 1.39471702753349 0.629372945552957,
+					-1.36831859799027 1.3351697487802, -0.677559691609331
+					0.629372945552957, 0.0131992147716102 -0.782220660901532,
+					1.39471702753349 -0.782220660901532, 1.39471702753349
+					-0.0764238576742875, -0.677559691609331 0.629372945552957,
+					-0.677559691609331 -0.782220660901532, -1.36831859799027
+					-0.0764238576742875, -0.677559691609331 -0.0764238576742875,
+					1.39471702753349 0.629372945552957, 1.39471702753349
+					-0.782220660901532, 0.703958121152551 -0.782220660901532,
+					1.39471702753349 0.629372945552957, 0.703958121152551
+					-0.782220660901532, -0.677559691609331 1.3351697487802,
+					-1.36831859799027 1.3351697487802, -1.36831859799027
+					-1.48801746412878, 1.39471702753349 -0.0764238576742875,
+					0.0131992147716102 1.3351697487802, -1.36831859799027
+					1.3351697487802, -0.677559691609331 0.629372945552957,
+					0.0131992147716102 0.629372945552957, 0.0131992147716102
+					-0.0764238576742875, -0.677559691609331 -0.782220660901532,
+					1.39471702753349 -0.0764238576742875, 0.0131992147716102
+					-0.0764238576742875, 0.703958121152551 1.3351697487802,
+					0.0131992147716102 -0.782220660901532, 1.39471702753349
+					-0.0764238576742875, -1.36831859799027 1.3351697487802,
+					-1.36831859799027 1.3351697487802, -1.36831859799027
+					1.3351697487802, 0.0131992147716102 -0.0764238576742875,
+					0.703958121152551 -0.0764238576742875, 1.39471702753349
+					-1.48801746412878, 0.0131992147716102 -0.782220660901532,
+					0.0131992147716102 -0.0764238576742875, 1.39471702753349
+					-0.0764238576742875, 1.39471702753349 1.3351697487802,
+					0.0131992147716102 0.629372945552957, -1.36831859799027
+					-1.48801746412878, 0.0131992147716102 0.629372945552957,
+					-0.677559691609331 -0.0764238576742875, -0.677559691609331
+					0.629372945552957, 0.0131992147716102 -0.0764238576742875,
+					1.39471702753349 1.3351697487802, 0.0131992147716102
+					0.629372945552957, 0.703958121152551 -0.0764238576742875,
+					-0.677559691609331 1.3351697487802, 0.0131992147716102
+					1.3351697487802, 1.39471702753349 1.3351697487802,
+					1.39471702753349 -0.782220660901532, -1.36831859799027
+					-1.48801746412878, 0.0131992147716102 -0.782220660901532,
+					1.39471702753349 0.629372945552957, 1.39471702753349
+					0.629372945552957, 1.39471702753349 -0.782220660901532,
+					0.0131992147716102 1.3351697487802, -0.677559691609331
+					0.629372945552957, -1.36831859799027 -0.0764238576742875,
+					1.39471702753349 -0.782220660901532, -1.36831859799027
+					-0.0764238576742875, 0.703958121152551 -0.782220660901532,
+					-1.36831859799027 -0.782220660901532];
+					T#9 = [1, 1, 1, 1, 1, 1, 0.445496049597669, 1, 1,
+					0.99237235067791, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					0.00128626947578598, 1, 1, 1, 1, 1, 1, 0.467186660608556, 1, 1,
+					1, 1, 1, 1, 1, 0.904732482299104, 0.305476999024931, 1, 1, 1, 1,
+					1, -1, -1, -1, -1, -0.103213481283021, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+					-0.995089220681471, -1, -1, -1, -0.516780535216119, -1, -1, -1,
+					-0.501467574503345, -1, -1, -1, -1, -1, -1, -1, -1, -1];
+					T#9` * Exp( -0.5 * Distance( T#8, T#7 ) ) - (-0.303975224139218);
+				),
+				Set Property( "Intermediate", 1 )
+			);
+			New Column( "Probability( Binary3=0 )",
+				"Numeric",
+				Formula(
+					Logist(
+						-(0.022995032518899 + -1.23257650813138 * Decision Value)
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 0, Creator( "Support Vector Machines" ),
+					ID( 2111166321 )}
+				)
+			);
+			New Column( "GH2_SVM",
+				"Numeric",
+				Formula(
+					1 + -1 * Logist(
+						-(0.022995032518899 + -1.23257650813138 * Decision Value)
+					)
+				),
+				Set Property(
+					"Response Probability",
+					{:Binary3, 1, Creator( "Support Vector Machines" ),
+					ID( 2111166321 )}
+				)
+			);
+			New Column( "Most Likely Binary3",
+				"Numeric",
+				"Nominal",
+				Formula(
+					IfMax( Name( "Probability( Binary3=0 )" ), 0, GH2_SVM, 1, . )
+				)
+			);
+		),
+		Inputs( {"Temp"(1), "WD"(1)} )
+	)
+)
