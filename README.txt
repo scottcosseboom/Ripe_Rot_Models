@@ -1,3 +1,5 @@
+Download the zipped file and extract.
+
 The .jrp files contains formulas/scripts for predicting ripe rot. Each script requires a jmp data table with two variables (columns) named "Temp" and "WD: 
 "Temp" is temperature in degrees Celcius
 "WD" is wetness duration in hours
